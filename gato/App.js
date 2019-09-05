@@ -38,12 +38,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   
-  tile: {
+  title: {
     borderWidth: 5,
     borderColor: '#7a0280',
     width:100,
     height:100,
-  },
-
-
+  }
 });
