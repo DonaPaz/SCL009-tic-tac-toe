@@ -1,108 +1,151 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
 
-export default class App extends Component {
+export default function App (){
 
-  constructor(props){
-    super(props);
-    this.state = {
-      gameState:[
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
-      ],
-      currentPlayer:1,
+  const [currentPlayer, setCurrentPlayer] = useState(1)
 
-    }
+  const [gameState, setGameState] = useState ([
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ]);
+
+
+  const initGame = () => {
+    setGameState([
+      [0, 0, 0],
+      [0, 0, 0],
+      [0, 0, 0]
+    ])
+    setCurrentPlayer(1)
   }
 
-  componentDidMount() {
-    this.initGame();
-  }
+  
 
-  initGame = () =>{
-    this.setState ({gameState:
-      [ [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0],
-
-      ]
-    });
-  };
-
-  onPressSign = (row, col) =>{
-    let valueTile = this.state.gameState[row][col];
+  const onPressSign = (row, col) =>{
+    let valueTile = gameState[row][col];
     if (valueTile !== 0) {return;}
-    
-    let currentPlayer =this.state.currentPlayer;
+
 
     //Position
-
-    let positionArr = this.state.gameState.slice();
+    let positionArr = gameState.slice();
     positionArr[row][col] = currentPlayer;
-    this.setState({gameState:positionArr});
+    setGameState(positionArr);
+    console.log(positionArr);
 
     //switch  Player
-    let nextPlayer = (currentPlayer == 1)? -1: 1;
-    this.setState({currentPlayer: nextPlayer});
+    let nextPlayer = currentPlayer * -1;
+    setCurrentPlayer(nextPlayer);
+    console.log(nextPlayer);
 
-   
+
+    //winner
+    let winPlayer = getWinner();
+    if (winPlayer == 1) {
+      Alert.alert("Player 1 Win!!!");
+      initGame();
+    } 
+    else if (winPlayer == -1) {
+      Alert.alert("Player 2 Win");
+      initGame();
+    }
+
   }
 
-  renderSings = (row,col) =>{
-    let gameValue = this.state.gameState[row][col];
+
+//check!
+  let renderSigns = (row,col) =>{
+    let gameValue = gameState[row][col];
     switch(gameValue){
       case 1: return <Text style={styles.gridX}>X</Text>;
-      case -1: return <Text style={styles.gridX}>O</Text>
+      case -1: return <Text style={styles.gridO}>O</Text>
       default: return <View/>
 
     }
   }
 
-  render (){
+
+
+  const getWinner = () => {
+    const sumGridValue = 3;
+    let positionArr = gameState;
+    let sum;
+
+    //row sum
+    for (let i=0; i < sumGridValue; i++) {
+      sum = positionArr [i][0] + positionArr [i][1] + positionArr [i][2];
+        if (sum == 3) {return 1; }
+        else if (sum == -3) { return -1; }
+    }
+
+    //col sum
+    for (let i=0; i < sumGridValue; i++) {
+      sum = positionArr [0][i] + positionArr [1][i] + positionArr [2][i];
+        if (sum == 3) {return 1; }
+        else if (sum == -3) { return -1; }
+    }
+
+    // Diag sum
+      sum = positionArr [0][0] + positionArr [1][1] + positionArr [2][2];
+        if (sum == 3) {return 1; }
+        else if (sum == -3) { return -1; }
+
+      sum = positionArr [2][0] + positionArr [1][1] + positionArr [0][2];
+        if (sum == 3) {return 1; }
+        else if (sum == -3) { return -1; }
+
+    //no win
+    return 0
+
+
+  }
+
+
+
+  
   return (
     <View style={styles.container}>
     
       <View style={{flexDirection:"row"}}>
-        <TouchableOpacity onPress={() => this.onPressSign(0, 0)} style={[styles.grid, { borderLeftWidth:0, borderTopWidth:0 }]}>
-          {this.renderSings(0, 0)}
+        <TouchableOpacity onPress={() => onPressSign(0, 0)} style={[styles.grid, { borderLeftWidth:0, borderTopWidth:0 }]}>
+          {renderSigns(0, 0)}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.onPressSign(0, 1)}style={[styles.grid, { borderTopWidth:0 }]}>
-          {this.renderSings(0, 1)}
+        <TouchableOpacity onPress={() => onPressSign(0, 1)}style={[styles.grid, { borderTopWidth:0 }]}>
+          {renderSigns(0, 1)}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.onPressSign(0, 2)} style={[styles.grid, { borderTopWidth:0, borderRightWidth:0 }]}>
-          {this.renderSings(0, 2)}
+        <TouchableOpacity onPress={() => onPressSign(0, 2)} style={[styles.grid, { borderTopWidth:0, borderRightWidth:0 }]}>
+          {renderSigns(0, 2)}
         </TouchableOpacity>
       </View>
      
       <View style={{flexDirection:"row"}}>
-        <TouchableOpacity onPress={() => this.onPressSign(1, 0)} style={[styles.grid, { borderLeftWidth:0 }]}>
-          {this.renderSings(1, 0)}
+        <TouchableOpacity onPress={() => onPressSign(1, 0)} style={[styles.grid, { borderLeftWidth:0 }]}>
+          {renderSigns(1, 0)}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.onPressSign(1, 1)} style={styles.grid}>
-          {this.renderSings(1, 1)}
+        <TouchableOpacity onPress={() => onPressSign(1, 1)} style={styles.grid}>
+          {renderSigns(1, 1)}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.onPressSign(1, 2)} style={[styles.grid, { borderRightWidth:0 }]}>
-          {this.renderSings(1, 2)}
+        <TouchableOpacity onPress={() => onPressSign(1, 2)} style={[styles.grid, { borderRightWidth:0 }]}>
+          {renderSigns(1, 2)}
         </TouchableOpacity>
       </View>
 
       <View style={{flexDirection:"row"}}>
-        <TouchableOpacity onPress={() => this.onPressSign(2, 0)} style={[styles.grid, { borderLeftWidth:0, borderBottomWidth:0 }]}>
-          {this.renderSings(2, 0)}
+        <TouchableOpacity onPress={() => onPressSign(2, 0)} style={[styles.grid, { borderLeftWidth:0, borderBottomWidth:0 }]}>
+          {renderSigns(2, 0)}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.onPressSign(2, 1)} style={[styles.grid, { borderBottomWidth:0 }]}>
-          {this.renderSings(2, 1)}
+        <TouchableOpacity onPress={() => onPressSign(2, 1)} style={[styles.grid, { borderBottomWidth:0 }]}>
+          {renderSigns(2, 1)}
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => this.onPressSign(2, 2)} style={[styles.grid, { borderBottomWidth:0, borderRightWidth:0 }]}>
-          {this.renderSings(2, 2)}
+        <TouchableOpacity onPress={() => onPressSign(2, 2)} style={[styles.grid, { borderBottomWidth:0, borderRightWidth:0 }]}>
+          {renderSigns(2, 2)}
         </TouchableOpacity>
       </View>
 
     </View>
   );
   }
-}
 
 const styles = StyleSheet.create({
   container: {
