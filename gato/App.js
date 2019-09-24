@@ -32,16 +32,17 @@ export default function App (){
     let positionArr = gameState.slice();
     positionArr[row][col] = currentPlayer;
     setGameState(positionArr);
-    console.log(positionArr);
+    
 
     //switch  Player
     let nextPlayer = currentPlayer * -1;
     setCurrentPlayer(nextPlayer);
-    console.log(nextPlayer);
+    
 
 
     //winner
     let winPlayer = getWinner();
+
     if (winPlayer == 1) {
       Alert.alert("Player 1 Win!!!");
       initGame();
@@ -50,8 +51,14 @@ export default function App (){
       Alert.alert("Player 2 Win");
       initGame();
     }
-
+    
+     else if (winPlayer == 0){
+       Alert.alert("Empate!!")
+       initGame();
+     }
+    
   }
+
 
 
 //check!
@@ -72,35 +79,61 @@ export default function App (){
     let positionArr = gameState;
     let sum;
 
+    if (positionArr[0].indexOf(0) === -1 && positionArr[1].indexOf(0) === -1 && positionArr[2].indexOf(0) === -1){ 
     //row sum
-    for (let i=0; i < sumGridValue; i++) {
-      sum = positionArr [i][0] + positionArr [i][1] + positionArr [i][2];
+      for (let i=0; i < sumGridValue; i++) {  
+        sum = positionArr [i][0] + positionArr [i][1] + positionArr [i][2];
         if (sum == 3) {return 1; }
         else if (sum == -3) { return -1; }
-    }
-
+        else if (sum == -1 || sum == 1) { return 0; }      
+      }
     //col sum
-    for (let i=0; i < sumGridValue; i++) {
-      sum = positionArr [0][i] + positionArr [1][i] + positionArr [2][i];
+      for (let i=0; i < sumGridValue; i++) {
+        sum = positionArr [0][i] + positionArr [1][i] + positionArr [2][i];
         if (sum == 3) {return 1; }
         else if (sum == -3) { return -1; }
-    }
-
-    // Diag sum
+        else if (sum == -1 || sum == 1) { return 0; }
+      }
+      // Diag sum
       sum = positionArr [0][0] + positionArr [1][1] + positionArr [2][2];
-        if (sum == 3) {return 1; }
-        else if (sum == -3) { return -1; }
+      if (sum == 3) {return 1; }
+      else if (sum == -3) { return -1; }  
 
       sum = positionArr [2][0] + positionArr [1][1] + positionArr [0][2];
+      if (sum == 3) {return 1; }
+      else if (sum == -3) { return -1; }
+       
+      return 99
+
+    } else {
+        for (let i=0; i < sumGridValue; i++) {  
+          sum = positionArr [i][0] + positionArr [i][1] + positionArr [i][2];
+          if (sum == 3) {return 1; }
+          else if (sum == -3) { return -1; }
+        }
+        //col sum
+        for (let i=0; i < sumGridValue; i++) {
+          sum = positionArr [0][i] + positionArr [1][i] + positionArr [2][i];
+          if (sum == 3) {return 1; }
+          else if (sum == -3) { return -1; }
+        }
+        
+        sum = positionArr [0][0] + positionArr [1][1] + positionArr [2][2];
+        if (sum == 3) {return 1; }
+        else if (sum == -3) { return -1; }  
+
+        sum = positionArr [2][0] + positionArr [1][1] + positionArr [0][2];
         if (sum == 3) {return 1; }
         else if (sum == -3) { return -1; }
+       
+        return 99
+      
+      }
 
-    //no win
-    return 0
+ }
 
-
-  }
-
+ 
+ 
 
 
   
@@ -176,6 +209,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     justifyContent:'center',
     alignItems:'center',
-  }
+  },
 
+  back:{
+    flex: 1,
+    resizeMode:'contain', 
+  },
 });
