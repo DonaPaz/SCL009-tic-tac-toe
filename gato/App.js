@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image} from 'react-native';
 
 export default function App (){
 
@@ -29,27 +29,25 @@ export default function App (){
 
 
     //Position
-    let positionArr = gameState.slice();
+    let positionArr = gameState
     positionArr[row][col] = currentPlayer;
     setGameState(positionArr);
     
-
     //switch  Player
     let nextPlayer = currentPlayer * -1;
     setCurrentPlayer(nextPlayer);
     
-
 
     //winner
     let winPlayer = getWinner();
 
     if (winPlayer == 1) {
       Alert.alert("Player 1 Win!!!");
-      initGame();
+      //initGame();
     } 
     else if (winPlayer == -1) {
       Alert.alert("Player 2 Win");
-      initGame();
+      //initGame();
     }
     
      else if (winPlayer == 0){
@@ -65,8 +63,8 @@ export default function App (){
   let renderSigns = (row,col) =>{
     let gameValue = gameState[row][col];
     switch(gameValue){
-      case 1: return <Text style={styles.gridX}>X</Text>;
-      case -1: return <Text style={styles.gridO}>O</Text>
+      case 1: return <Image source={require('./assets/gato.png')} style={styles.gridImage} />
+      case -1: return <Image source={require('./assets/llanto.png')} style={styles.gridImage} />
       default: return <View/>
 
     }
@@ -138,9 +136,14 @@ export default function App (){
 
   
   return (
+    
     <View style={styles.container}>
     
-      <View style={{flexDirection:"row"}}>
+      <View style={styles.title}>
+        <Image source={require('./assets/title.png')} style={styles.imgtitle}/>
+      </View>
+    
+      <View style={styles.rows}>
         <TouchableOpacity onPress={() => onPressSign(0, 0)} style={[styles.grid, { borderLeftWidth:0, borderTopWidth:0 }]}>
           {renderSigns(0, 0)}
         </TouchableOpacity>
@@ -152,7 +155,7 @@ export default function App (){
         </TouchableOpacity>
       </View>
      
-      <View style={{flexDirection:"row"}}>
+      <View style={styles.rows}>
         <TouchableOpacity onPress={() => onPressSign(1, 0)} style={[styles.grid, { borderLeftWidth:0 }]}>
           {renderSigns(1, 0)}
         </TouchableOpacity>
@@ -164,7 +167,7 @@ export default function App (){
         </TouchableOpacity>
       </View>
 
-      <View style={{flexDirection:"row"}}>
+      <View style={styles.rows}>
         <TouchableOpacity onPress={() => onPressSign(2, 0)} style={[styles.grid, { borderLeftWidth:0, borderBottomWidth:0 }]}>
           {renderSigns(2, 0)}
         </TouchableOpacity>
@@ -176,43 +179,68 @@ export default function App (){
         </TouchableOpacity>
       </View>
 
+      <View style={styles.btnProp}>
+        <TouchableOpacity onPress={() => {initGame()}}> 
+          <Text style={styles.restartButton}>Reiniciar Juego</Text>
+        </TouchableOpacity>
     </View>
+    
+    </View>
+
+
+
+
   );
-  }
+  };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#2b347a',
     alignItems: 'center',
     justifyContent: 'center',
   },
   
   grid: {
-    borderWidth: 5,
-    borderColor: '#7a0280',
+    borderWidth: 2,
+    borderColor: '#71a83a',
     width:100,
     height:100,
   },
 
-  gridX:{
-    fontSize: 80,
-    flex:1,
-    textAlign: 'center',
+  rows:{
+    flexDirection:'row',
+    alignItems:'center',
     justifyContent:'center',
+  },
+
+  gridImage:{
+    flex:1,
+    width:85,
+    height:85,
+    resizeMode:'contain',
+    marginLeft: 10,
+    borderColor:'#474744',
+    },
+
+  imgTitle:{
+    flex:1,
     alignItems:'center',
   },
 
-  gridO:{
-    fontSize: 80,
-    flex:1,
-    textAlign: 'center',
-    justifyContent:'center',
-    alignItems:'center',
+  btnProp: {
+    marginTop: 100,
   },
 
-  back:{
-    flex: 1,
-    resizeMode:'contain', 
+  restartButton: {
+    backgroundColor: '#f05c15',
+    borderRadius: 10,
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#e8e1d1',
+    textAlign: 'center',
+    width: 200,
+    height: 60,
+    paddingVertical: 14,
   },
 });
