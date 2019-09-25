@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Alert, Image} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert, Image, ImageBackground } from 'react-native';
 
 export default function App (){
 
@@ -42,12 +42,12 @@ export default function App (){
     let winPlayer = getWinner();
 
     if (winPlayer == 1) {
-      Alert.alert("Player 1 Win!!!");
-      //initGame();
+      Alert.alert("Gana el gato!!!");
+      initGame();
     } 
     else if (winPlayer == -1) {
-      Alert.alert("Player 2 Win");
-      //initGame();
+      Alert.alert("Gana ella!!!");
+      initGame();
     }
     
      else if (winPlayer == 0){
@@ -138,7 +138,11 @@ export default function App (){
   return (
     
     <View style={styles.container}>
-    
+      
+      <View style={styles.backImg}>
+        <Image source={require('./assets/background.jpg')}/>
+      </View>
+
       <View style={styles.title}>
         <Image source={require('./assets/title.png')} style={styles.imgtitle}/>
       </View>
@@ -203,7 +207,7 @@ const styles = StyleSheet.create({
   
   grid: {
     borderWidth: 2,
-    borderColor: '#71a83a',
+    borderColor: '#e8e1d1',
     width:100,
     height:100,
   },
@@ -229,7 +233,8 @@ const styles = StyleSheet.create({
   },
 
   btnProp: {
-    marginTop: 100,
+     marginTop: 100,
+     marginBottom: 30,
   },
 
   restartButton: {
@@ -242,5 +247,11 @@ const styles = StyleSheet.create({
     width: 200,
     height: 60,
     paddingVertical: 14,
+    
+  },
+
+  backImg:{
+    flex: 1,
+    resizeMode:'cover', 
   },
 });
