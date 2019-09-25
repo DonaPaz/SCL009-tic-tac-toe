@@ -35,6 +35,7 @@ export default function App (){
     let nextPlayer = currentPlayer * -1;
     setCurrentPlayer(nextPlayer);
     
+
     //winner
     let winPlayer = getWinner();
 
@@ -176,6 +177,7 @@ export default function App (){
         <TouchableOpacity onPress={() => {initGame()}}> 
           <Text style={styles.restartButton}>Reiniciar Juego</Text>
         </TouchableOpacity>
+
        </View>
     
     </View>
