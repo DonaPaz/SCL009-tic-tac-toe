@@ -11,7 +11,6 @@ export default function App (){
     [0, 0, 0]
   ]);
 
-
   const initGame = () => {
     setGameState([
       [0, 0, 0],
@@ -21,7 +20,6 @@ export default function App (){
     setCurrentPlayer(1)
   }
 
-  
 
   const onPressSign = (row, col) =>{
     let valueTile = gameState[row][col];
@@ -57,8 +55,6 @@ export default function App (){
     
   }
 
-
-
 //check!
   let renderSigns = (row,col) =>{
     let gameValue = gameState[row][col];
@@ -69,8 +65,6 @@ export default function App (){
 
     }
   }
-
-
 
   const getWinner = () => {
     const sumGridValue = 3;
@@ -130,10 +124,6 @@ export default function App (){
 
  }
 
- 
- 
-
-
   
   return (
     
@@ -187,12 +177,10 @@ export default function App (){
         <TouchableOpacity onPress={() => {initGame()}}> 
           <Text style={styles.restartButton}>Reiniciar Juego</Text>
         </TouchableOpacity>
-    </View>
+
+       </View>
     
     </View>
-
-
-
 
   );
   };
